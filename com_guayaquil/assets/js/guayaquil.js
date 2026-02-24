@@ -341,15 +341,8 @@ function highLightXml(element) {
 jQuery(document).ready(function () {
     initServiceMessages();
 
-    hljs.configure({
-        tabReplace: '    ',
-        useBR: true
-    });
-
-    jQuery('.response_message code').each(function (i, block) {
-        highLightXml(block);
-        hljs.highlightBlock(block);
-        jQuery(block).css('white-space', 'pre');
+    document.querySelectorAll('pre.hljs').forEach((el) => {
+        hljs.highlightElement(el);
     });
 
     jQuery(document).on('change', '#language', function () {

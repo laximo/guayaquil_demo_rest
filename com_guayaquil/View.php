@@ -2,6 +2,7 @@
 
 namespace guayaquil;
 
+use AllowDynamicProperties;
 use Exception;
 use guayaquil\modules\Input;
 use guayaquil\modules\pathway\Pathway;
@@ -15,6 +16,7 @@ use Twig\Loader\FilesystemLoader;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
+#[AllowDynamicProperties]
 class View
 {
     /**
@@ -77,7 +79,7 @@ class View
 
     public function appendLastResponse(string $body)
     {
-        $this->lastExecutionResponse[] = $body;
+        $this->lastExecutionResponse[] = json_encode(json_decode($body), JSON_PRETTY_PRINT);
     }
 
     public function appendLastExecutionCommand(array $commands)
@@ -273,8 +275,10 @@ class View
             $twig = new Environment(new FilesystemLoader([realpath(__DIR__)]), [
                 'cache' => false,
                 'auto_reload' => true,
+                'debug' => true,
             ]);
 
+            $twig->addExtension(new \Twig\Extension\DebugExtension());
             $twig->addFunction(new TwigFunction('createUrl', [$this, 'createUrl']));
             $twig->addFunction(new TwigFunction('url', [$this, 'createUrl2']));
             $twig->addFilter(new TwigFilter('dump', 'var_dump'));

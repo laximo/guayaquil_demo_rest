@@ -38,7 +38,10 @@ class LoginHtml extends View
         $key = $user['password'];
 
         $url = parse_url($user['backurl']);
-        parse_str($url['query'], $backurlParams);
+
+        if (!empty($url['query'])) {
+            parse_str($url['query'], $backurlParams);
+        }
 
         User::login($login, $key);
         if (User::getUser()->isLoggedIn()) {

@@ -17,7 +17,8 @@
         {%- apply spaceless -%}
             <div class="response_message hidden">
                 {% for response in lastExecutionResponse %}
-                    <code class="hljs json">{{ response }}</code>
+{#                    <code class="hljs json">{ response }}</code>#}
+                    <pre class="hljs">{{ response }}</pre>
                 {% endfor %}
             </div>
         {% endapply %}
