@@ -51,12 +51,12 @@ trait ServiceTrait
                 $timeEnd = microtime(true);
                 $this->view->setLastExecutionTime($timeEnd - $timeStart);
 
-                $commandTexts = [];
+                $commandUrls = [];
                 foreach ($commands as $command) {
-                    $commandTexts[] = $command->getCommand();
+                    $commandUrls[] = $command->getRequestUrl();
                 }
 
-                $this->view->appendLastExecutionCommand($commandTexts);
+                $this->view->appendLastExecutionCommand($commandUrls);
             }
         }
 
