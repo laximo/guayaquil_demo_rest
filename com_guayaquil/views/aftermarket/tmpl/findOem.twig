@@ -33,7 +33,7 @@
     <div class="flex images-wrapper">
         {% for image in detail.images %}
             <div data-full="{{ image.filename }}" class="aftermarket-detail-image">
-                <img src="{{ image.thumbnailfilename }}" alt="">
+                <img src="{{ image.filename }}" alt="">
             </div>
         {% endfor %}
     </div>

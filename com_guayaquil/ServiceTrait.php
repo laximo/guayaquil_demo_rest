@@ -21,7 +21,7 @@ trait ServiceTrait
             $timeEnd = microtime(true);
             if ($this->view) {
                 $this->view->setLastExecutionTime($timeEnd - $timeStart);
-                $this->view->appendLastExecutionCommand([$command->getCommand()]);
+                $this->view->appendLastExecutionCommand([$command->getRequestUrl()]);
             }
         }
 
