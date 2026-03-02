@@ -79,7 +79,7 @@ class View
 
     public function appendLastResponse(string $body)
     {
-        $this->lastExecutionResponse[] = json_encode(json_decode($body), JSON_PRETTY_PRINT);
+        $this->lastExecutionResponse[] = json_encode(json_decode($body), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     }
 
     public function appendLastExecutionCommand(array $commands)

@@ -44,7 +44,7 @@ class AftermarketHtml extends View
         $detailId = $this->input->getString('detail_id');
         $input = $this->input->getArray();
         $options = isset($input['options']) && is_array($input['options'])  ? $input['options'] : ['crosses', 'images'];
-        $replacementtypes = isset($input['replacementtypes']) && is_array($input['replacementtypes']) ? $input['replacementtypes'] : [];
+        $replacementtypes = isset($input['replacementtypes']) && is_array($input['replacementtypes']) ? $input['replacementtypes'] : ['PartOfTheWhole', 'Replacement'];
         $returnImages = in_array('images', $options);
         $data = [];
 

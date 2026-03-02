@@ -333,16 +333,16 @@
         },
         {
             "name": "laximo/guayaquillib_rest",
-            "version": "v1.0.12",
+            "version": "v1.0.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laximo/guayaquillib_rest.git",
-                "reference": "038b559f2a796c374e7ca476737d417cf4414d8a"
+                "reference": "b30c669642fb7ad80f3cca857dac957c31ae15b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laximo/guayaquillib_rest/zipball/038b559f2a796c374e7ca476737d417cf4414d8a",
-                "reference": "038b559f2a796c374e7ca476737d417cf4414d8a",
+                "url": "https://api.github.com/repos/laximo/guayaquillib_rest/zipball/b30c669642fb7ad80f3cca857dac957c31ae15b1",
+                "reference": "b30c669642fb7ad80f3cca857dac957c31ae15b1",
                 "shasum": ""
             },
             "require": {
@@ -380,9 +380,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laximo/guayaquillib_rest/issues",
-                "source": "https://github.com/laximo/guayaquillib_rest/tree/v1.0.12"
+                "source": "https://github.com/laximo/guayaquillib_rest/tree/v1.0.13"
             },
-            "time": "2026-02-26T13:08:07+00:00"
+            "time": "2026-03-02T10:51:27+00:00"
         },
         {
             "name": "psr/http-client",
