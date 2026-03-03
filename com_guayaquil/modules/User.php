@@ -94,7 +94,6 @@ class User
             $am->findOem('c110', null, false);
             $services['am'] = 'am';
         } catch (Exception $ex) {
-            print_r($ex);
         }
 
         try {
@@ -102,7 +101,6 @@ class User
             $oem->listCatalogs();
             $services['oem'] = 'oem';
         } catch (Exception $ex) {
-            print_r($ex);
         }
 
         if (count($services)) {
