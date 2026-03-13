@@ -91,21 +91,21 @@ class User
         $services                 = [];
         $serviceAvailableMessages = [];
 
-//        try {
-//            $am = new ServiceAmProxy(null, $user, $pass, Config::getConfig()->amServiceUrl);
-//            $am->findOem('c110', null, false);
-//            $services['am'] = 'am';
-//        } catch (Exception $ex) {
+        try {
+            $am = new ServiceAmProxy(null, $user, $pass, Config::getConfig()->amServiceUrl);
+            $am->findOem('c110', null, false);
+            $services['am'] = 'am';
+        } catch (Exception $ex) {
             $serviceAvailableMessages[] = 'AM service is not available for user: ' . $user;
-//        }
+        }
 
-//        try {
-//            $oem = new ServiceOemProxy(null, $user, $pass, Config::getConfig()->oemServiceUrl);
-//            $oem->listCatalogs();
-//            $services['oem'] = 'oem';
-//        } catch (Exception $ex) {
+        try {
+            $oem = new ServiceOemProxy(null, $user, $pass, Config::getConfig()->oemServiceUrl);
+            $oem->listCatalogs();
+            $services['oem'] = 'oem';
+        } catch (Exception $ex) {
             $serviceAvailableMessages[] = 'OEM service is not available for user: ' . $user;
-//        }
+        }
 
         if (count($services)) {
             $user = new User(json_encode([
