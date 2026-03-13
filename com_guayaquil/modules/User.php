@@ -23,7 +23,7 @@ class User
     public function __construct($storedData = '')
     {
         if ($storedData) {
-            $data = json_decode($storedData, true);
+            $data           = json_decode($storedData, true);
             $this->userName = $data['login'];
             $this->password = $data['password'];
             $this->services = $data['services'];
@@ -65,7 +65,7 @@ class User
     /**
      * @return string
      */
-    public function getPassword() : string
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -73,7 +73,7 @@ class User
     /**
      * @return bool
      */
-    public function isLoggedIn() : bool
+    public function isLoggedIn(): bool
     {
         return count($this->services) > 0;
     }
@@ -81,21 +81,22 @@ class User
     /**
      * @return bool
      */
-    public function isServiceAvailable(string $service) : bool
+    public function isServiceAvailable(string $service): bool
     {
         return array_key_exists($service, $this->services);
     }
 
     public static function login(string $user, string $pass)
     {
-        $services = [];
+        $services                 = [];
+        $serviceAvailableMessages = [];
 
         try {
             $am = new ServiceAmProxy(null, $user, $pass, Config::getConfig()->amServiceUrl);
             $am->findOem('c110', null, false);
             $services['am'] = 'am';
         } catch (Exception $ex) {
-            throw new RuntimeException('AM service is not available for user: ' . $user);
+            $serviceAvailableMessages[] = 'AM service is not available for user: ' . $user;
         }
 
         try {
@@ -103,12 +104,12 @@ class User
             $oem->listCatalogs();
             $services['oem'] = 'oem';
         } catch (Exception $ex) {
-            throw new RuntimeException('OEM service is not available for user: ' . $user);
+            $serviceAvailableMessages[] = 'OEM service is not available for user: ' . $user;
         }
 
         if (count($services)) {
             $user = new User(json_encode([
-                'login' => $user,
+                'login'    => $user,
                 'password' => $pass,
                 'services' => $services,
             ]));
@@ -116,6 +117,8 @@ class User
             $_SESSION['userData'] = $user->toString();
         } else {
             User::logout();
+            $userErrorMessage = implode("\n", $serviceAvailableMessages);
+            throw new RuntimeException($userErrorMessage);
         }
     }
 
@@ -128,7 +131,7 @@ class User
     public function toString()
     {
         return json_encode([
-            'login' => $this->userName,
+            'login'    => $this->userName,
             'password' => $this->password,
             'services' => $this->services,
         ]);
