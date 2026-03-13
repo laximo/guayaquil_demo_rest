@@ -6,6 +6,7 @@ use Exception;
 use guayaquil\Config;
 use guayaquil\ServiceAmProxy;
 use guayaquil\ServiceOemProxy;
+use RuntimeException;
 
 class User
 {
@@ -94,6 +95,7 @@ class User
             $am->findOem('c110', null, false);
             $services['am'] = 'am';
         } catch (Exception $ex) {
+            throw new RuntimeException('AM service is not available for user: ' . $user);
         }
 
         try {
@@ -101,6 +103,7 @@ class User
             $oem->listCatalogs();
             $services['oem'] = 'oem';
         } catch (Exception $ex) {
+            throw new RuntimeException('OEM service is not available for user: ' . $user);
         }
 
         if (count($services)) {

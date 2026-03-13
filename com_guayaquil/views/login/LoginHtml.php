@@ -4,6 +4,7 @@ namespace guayaquil\views\login;
 
 use guayaquil\modules\User;
 use guayaquil\View;
+use RuntimeException;
 
 
 class LoginHtml extends View
@@ -17,7 +18,7 @@ class LoginHtml extends View
                 break;
             case 'logout':
                 $user = $this->input->formData()['user'];
-                $url = parse_url($user['backurl']);
+                $url  = parse_url($user['backurl']);
                 parse_str($url['query'], $backurlParams);
 
                 User::logout();
@@ -34,8 +35,8 @@ class LoginHtml extends View
             return;
         }
 
-        $login = trim($user['login']??'');
-        $key = $user['password'];
+        $login = trim($user['login'] ?? '');
+        $key   = $user['password'];
 
         $url = parse_url($user['backurl']);
 
@@ -43,11 +44,27 @@ class LoginHtml extends View
             parse_str($url['query'], $backurlParams);
         }
 
-        User::login($login, $key);
-        if (User::getUser()->isLoggedIn()) {
-            $this->redirect($user['backurl'] . '&auth=true');
-        } else {
-            $this->redirect($user['backurl'] . '&auth=false');
+        $errorMessage = '';
+
+        try {
+            User::login($login, $key);
+        } catch (RuntimeException $e) {
+            $errorMessage = $e->getMessage();
         }
+
+        $urlParams = [];
+
+        if ($errorMessage) {
+            $urlParams['errorMessage'] = $errorMessage;
+        }
+
+        if (User::getUser()->isLoggedIn()) {
+            $urlParams['auth'] = 'true';
+        } else {
+            $urlParams['auth'] = 'false';
+        }
+
+        $paramString = http_build_query($urlParams);
+        $this->redirect($user['backurl'] . $paramString ? '?' . $paramString : '');
     }
 }

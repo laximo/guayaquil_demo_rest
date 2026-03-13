@@ -48,7 +48,7 @@ class View
      * @var string[]
      */
     public $lastExecutionResponse = [];
-    
+
     /**
      * @var Config
      */
@@ -61,10 +61,16 @@ class View
 
     public function __construct()
     {
-        $this->input = new Input();
-        $this->pathway = new Pathway();
+        $this->input     = new Input();
+        $this->pathway   = new Pathway();
         $this->rawFormat = $this->input->getString('format', '') == 'raw';
-        $this->config = Config::getConfig();
+        $this->config    = Config::getConfig();
+        $errorMessage    = $this->input->getString('errorMessage', '');
+
+        if ($errorMessage) {
+            $this->message = $errorMessage;
+            $this->type    = 'error';
+        }
 
         if ($this->config->showWelcomePage) {
             $this->pathway->addItem($this->getLanguage()->t('laximoHome'), '/');
@@ -108,10 +114,10 @@ class View
         if (!$oem) {
             $user = User::getUser();
             if ($user->isServiceAvailable('oem')) {
-                $login = $user->getUserName();
+                $login    = $user->getUserName();
                 $password = $user->getPassword();
             } else {
-                $login = $this->config->defaultUserLogin;
+                $login    = $this->config->defaultUserLogin;
                 $password = $this->config->defaultUserKey;
             }
 
@@ -131,10 +137,10 @@ class View
         if (!$am) {
             $user = User::getUser();
             if ($user->isServiceAvailable('am')) {
-                $login = $user->getUserName();
+                $login    = $user->getUserName();
                 $password = $user->getPassword();
             } else {
-                $login = $this->config->defaultUserLogin;
+                $login    = $this->config->defaultUserLogin;
                 $password = $this->config->defaultUserKey;
             }
 
@@ -182,7 +188,7 @@ class View
         }
 
         foreach ($params as $key => $param) {
-            $params[$key] = trim($param??'');
+            $params[$key] = trim($param ?? '');
         }
 
         if ($params) {
@@ -208,9 +214,10 @@ class View
         if (is_a($object, CatalogObject::class)) {
             /** @var CatalogObject $catalog */
             $catalog = $object;
+
             return $this->createUrl('catalog', '', '', [
-                'c' => $catalog->getCode(),
-                'ssd' => @$params['ssd'],
+                'c'    => $catalog->getCode(),
+                'ssd'  => @$params['ssd'],
                 'spi2' => $catalog->getWizard2Feature() != null ? 't' : ''
             ]);
         }
@@ -218,8 +225,9 @@ class View
         if (is_a($object, UnitObject::class)) {
             /** @var UnitObject $catalog */
             $unit = $object;
+
             return $this->createUrl('unit', '', '', [
-                'c' => @$params['c'],
+                'c'   => @$params['c'],
                 'vid' => @$params['vid'],
                 'uid' => $unit->getUnitId(),
                 'cid' => @$params['cid'],
@@ -237,6 +245,7 @@ class View
             $this->renderPage('error/tmpl', 'unauthorized.twig', [
                 'type' => 'unauthorized',
             ]);
+
             return;
         }
 
@@ -247,12 +256,12 @@ class View
     {
         $additionalVars = [
             'languages' => $this->getLanguage()->getLocalizationsList(),
-            'current' => $this->getLanguage()->getLocalization(),
-            'task' => $this->input->getString('task', ''),
-            'user' => User::getUser(),
+            'current'   => $this->getLanguage()->getLocalization(),
+            'task'      => $this->input->getString('task', ''),
+            'user'      => User::getUser(),
         ];
 
-        $twig = $this->getTwig();
+        $twig   = $this->getTwig();
         $loader = new FilesystemLoader([
             realpath(__DIR__) . '/views/' . $tpl . '/',
             realpath(__DIR__),
@@ -273,9 +282,9 @@ class View
 
         if (!$twig) {
             $twig = new Environment(new FilesystemLoader([realpath(__DIR__)]), [
-                'cache' => false,
+                'cache'       => false,
                 'auto_reload' => true,
-                'debug' => true,
+                'debug'       => true,
             ]);
 
             $twig->addExtension(new \Twig\Extension\DebugExtension());

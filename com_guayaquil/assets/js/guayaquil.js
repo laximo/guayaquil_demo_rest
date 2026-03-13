@@ -380,7 +380,7 @@ jQuery(document).ready(function () {
 
         setTimeout(function () {
             jQuery(alertMessage).hide();
-        }, 2000)
+        }, 10000)
     }
 
     jQuery('form.with-validate [type="submit"]').click(function (e) {
