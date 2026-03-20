@@ -53,7 +53,7 @@ trait ServiceTrait
 
                 $commandUrls = [];
                 foreach ($commands as $command) {
-                    $commandUrls[] = $command->getRequestUrl();
+                    $commandUrls[] = urldecode($command->getRequestUrl());
                 }
 
                 $this->view->appendLastExecutionCommand($commandUrls);
