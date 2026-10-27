@@ -9,6 +9,26 @@ use GuayaquilLib\Oem;
 
 class Wizard2Html extends View
 {
+    /**
+     * @var string
+     */
+    public $ssd;
+
+    /**
+     * @var array
+     */
+    public $wizard;
+
+    /**
+     * @var CatalogObject
+     */
+    public $cataloginfo;
+
+    /**
+     * @var string
+     */
+    public $c;
+
     public function Display($tpl = 'wizard2', $view = 'view')
     {
         $catalog = $this->input->getString('c', '');

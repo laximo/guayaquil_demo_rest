@@ -14,11 +14,113 @@ use GuayaquilLib\objects\oem\VehicleListObject;
 use GuayaquilLib\Oem;
 use stdClass;
 
-/**
- * @property string notFoundReason
- */
 class VehiclesHtml extends View
 {
+    /**
+     * @var array
+     */
+    public $catalogNames = [];
+
+    /**
+     * @var array
+     */
+    public $catalogsCodes = [];
+
+    /**
+     * @var string
+     */
+    public $searchBy;
+
+    /**
+     * @var string
+     */
+    public $vin;
+
+    /**
+     * @var string
+     */
+    public $frameNo;
+
+    /**
+     * @var CatalogObject|null
+     */
+    public $cataloginfo;
+
+    /**
+     * @var int|bool
+     */
+    public $useApplicability;
+
+    /**
+     * @var array
+     */
+    public $vehicles;
+
+    /**
+     * @var string
+     */
+    public $brandName;
+
+    /**
+     * @var array
+     */
+    public $columns;
+
+    /**
+     * @var string
+     */
+    public $oem;
+
+    /**
+     * @var array
+     */
+    public $customOperationValue;
+
+    /**
+     * @var string
+     */
+    public $ident;
+
+    /**
+     * @var string
+     */
+    public $oemExample;
+
+    /**
+     * @var bool
+     */
+    public $showGrouppedVehicle;
+
+    /**
+     * @var array
+     */
+    public $headers;
+
+    /**
+     * @var array
+     */
+    public $groupedVehicles;
+
+    /**
+     * @var array
+     */
+    public $originals;
+
+    /**
+     * @var array
+     */
+    public $brands;
+
+    /**
+     * @var string
+     */
+    public $notFoundReason;
+
+    /**
+     * @var array
+     */
+    public $vehicleChildren = [];
+
     public function Display($tpl = 'vehicles', $view = 'view')
     {
         if ($this->input->getString('view') === 'checkDetailApplicability') {
@@ -63,6 +165,9 @@ class VehiclesHtml extends View
                 break;
             case 'execCustomOperation':
                 $notFoundData = $this->input->get('data');
+                if (!is_array($notFoundData)) {
+                    $notFoundData = ($notFoundData === null || $notFoundData === false || $notFoundData === '') ? [] : [$notFoundData];
+                }
                 $msg = implode('-', $notFoundData);
                 $type = [
                     'name' => $this->getLanguage()->t($operation),
@@ -71,7 +176,7 @@ class VehiclesHtml extends View
 
                 $typeValue = $msg;
 
-                $requests[] = Oem::execCustomOperation($catalogCode, $operation, $this->input->get('data'), $this->getLanguage()->getLocalization());
+                $requests[] = Oem::execCustomOperation($catalogCode, $operation, $notFoundData, $this->getLanguage()->getLocalization());
 
                 break;
             case 'findByWizard2':
@@ -226,7 +331,11 @@ class VehiclesHtml extends View
 
             if ($vehicle->getAttributes()) {
                 foreach ($vehicle->getAttributes() as $column => $attribute) {
-                    @$columnValues[$column][$attribute->getValue()]++;
+                    $valueKey = (string)$attribute->getValue();
+                    if (!isset($columnValues[$column][$valueKey])) {
+                        $columnValues[$column][$valueKey] = 0;
+                    }
+                    $columnValues[$column][$valueKey]++;
                     $tableHeader[$column] = $attribute->getName();
                 }
             }
@@ -258,13 +367,16 @@ class VehiclesHtml extends View
         }
 
         $groupedByName = [];
+        $this->vehicleChildren = [];
         foreach ($vehicles->getVehicles() as $vehicle) {
-            if (!isset($groupedByName[$vehicle->getName()])) {
-                $groupedByName[$vehicle->getName()] = $vehicle;
-            } else {
-                if ($groupedByName[$vehicle->getName()] !== $vehicle) {
-                    $groupedByName[$vehicle->getName()]->children[] = $vehicle;
+            $name = $vehicle->getName();
+            if (!isset($groupedByName[$name])) {
+                $groupedByName[$name] = $vehicle;
+            } elseif ($groupedByName[$name] !== $vehicle) {
+                if (!isset($this->vehicleChildren[$name])) {
+                    $this->vehicleChildren[$name] = [];
                 }
+                $this->vehicleChildren[$name][] = $vehicle;
             }
         }
 

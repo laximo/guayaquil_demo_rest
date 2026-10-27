@@ -10,17 +10,43 @@ use GuayaquilLib\objects\oem\GroupObject;
 use GuayaquilLib\objects\oem\VehicleObject;
 use GuayaquilLib\Oem;
 
-/**
- * @property VehicleObject vehicle
- * @property array groups
- * @property string ssd
- * @property string oem
- * @property int useApplicability
- * @property CatalogObject $cataloginfo
- * @property bool $usePartByNameSearch
- */
 class QgroupsHtml extends View
 {
+    /**
+     * @var VehicleObject
+     */
+    public $vehicle;
+
+    /**
+     * @var array
+     */
+    public $groups;
+
+    /**
+     * @var CatalogObject
+     */
+    public $cataloginfo;
+
+    /**
+     * @var string
+     */
+    public $ssd;
+
+    /**
+     * @var string
+     */
+    public $oem;
+
+    /**
+     * @var bool
+     */
+    public $useApplicability;
+
+    /**
+     * @var bool
+     */
+    public $usePartByNameSearch;
+
     public function Display($tpl = 'qgroups', $view = 'view')
     {
         $catalogCode = $this->input->getString('c');

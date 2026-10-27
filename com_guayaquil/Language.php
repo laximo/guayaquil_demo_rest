@@ -97,12 +97,41 @@ class Language
         $localizations = $this->getLocalizations();
 
         if (array_key_exists($name, $localizations) && $localizations[$name]) {
-            $string = (string)$localizations[$name];
-
-            return sprintf($string, ...$args);
+            return $this->format((string)$localizations[$name], $args);
         } else {
             return $name;
         }
+    }
+
+    /**
+     * @param string $string
+     * @param array $args
+     * @return string
+     */
+    protected function format($string, array $args)
+    {
+        $normalized = [];
+        foreach ($args as $arg) {
+            if (is_array($arg) || is_object($arg)) {
+                $normalized[] = '';
+            } else {
+                $normalized[] = (string)$arg;
+            }
+        }
+
+        $placeholderCount = preg_match_all('/%(?:\d+\$)?[bcdeEfFgGosuxX]/', str_replace('%%', '', $string), $matches);
+        if ($placeholderCount === false) {
+            $placeholderCount = 0;
+        }
+        while (count($normalized) < $placeholderCount) {
+            $normalized[] = '';
+        }
+
+        if (!$normalized) {
+            return $string;
+        }
+
+        return vsprintf($string, $normalized);
     }
 
     public function noSpaces($name)

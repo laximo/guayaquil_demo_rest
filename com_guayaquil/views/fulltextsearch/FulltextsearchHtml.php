@@ -10,6 +10,31 @@ use GuayaquilLib\Oem;
 
 class FulltextsearchHtml extends View
 {
+    /**
+     * @var CatalogObject
+     */
+    public $catalog;
+
+    /**
+     * @var PartShortListObject
+     */
+    public $details;
+
+    /**
+     * @var VehicleObject
+     */
+    public $vehicle;
+
+    /**
+     * @var string
+     */
+    public $partName;
+
+    /**
+     * @var bool
+     */
+    public $supportApplicability;
+
     public function Display($tpl = 'applicabilitydetails', $view = 'view')
     {
         $catalog = $this->input->getString('c', '');

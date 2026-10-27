@@ -13,6 +13,81 @@ use GuayaquilLib\Oem;
 
 class VehicleHtml extends View
 {
+    /**
+     * @var string
+     */
+    public $vin;
+
+    /**
+     * @var string
+     */
+    public $frame;
+
+    /**
+     * @var string
+     */
+    public $node_id;
+
+    /**
+     * @var CatalogObject
+     */
+    public $cataloginfo;
+
+    /**
+     * @var VehicleObject
+     */
+    public $vehicle;
+
+    /**
+     * @var array
+     */
+    public $categories;
+
+    /**
+     * @var array
+     */
+    public $units;
+
+    /**
+     * @var string
+     */
+    public $cCid;
+
+    /**
+     * @var int|string
+     */
+    public $firstCategory;
+
+    /**
+     * @var int|bool
+     */
+    public $useApplicability;
+
+    /**
+     * @var int|bool
+     */
+    public $usePartByNameSearch;
+
+    /**
+     * @var array|null
+     */
+    public $partsList;
+
+    /**
+     * @var int
+     */
+    public $totalParts;
+
+    /**
+     * @var int
+     */
+    public $total;
+
+    /**
+     * @var string
+     */
+    public $linkedWithUnit;
+
     public function Display($tpl = 'vehicle', $view = 'view')
     {
         $catalogCode = $this->input->getString('c');

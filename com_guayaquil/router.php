@@ -50,6 +50,7 @@ class router
         }
 
         if (!empty($query)) {
+            $parameters = [];
             $values = explode('&', $query);
             foreach ($values as $key => $value) {
                 if ($value === '') {

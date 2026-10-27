@@ -5,16 +5,38 @@ namespace guayaquil\views\detailfilter;
 use guayaquil\View;
 use GuayaquilLib\objects\oem\FilterObject;
 
-/**
- * @property string oem
- * @property string brand
- * @property array from
- * @property string fromTask
- * @property string fromCatalogTask
- * @property FilterObject $filters
- */
 class DetailfilterHtml extends View
 {
+    /**
+     * @var FilterObject
+     */
+    public $filters;
+
+    /**
+     * @var string
+     */
+    public $oem;
+
+    /**
+     * @var string
+     */
+    public $brand;
+
+    /**
+     * @var array
+     */
+    public $from;
+
+    /**
+     * @var string
+     */
+    public $fromTask;
+
+    /**
+     * @var string
+     */
+    public $fromCatalogTask;
+
     public function Display($tpl = 'detailfilter', $view = 'view')
     {
         $catalogCode = $this->input->getString('c');

@@ -17,12 +17,16 @@ class LoginHtml extends View
                 $this->login();
                 break;
             case 'logout':
-                $user = $this->input->formData()['user'];
-                $url  = parse_url($user['backurl']);
-                parse_str($url['query'], $backurlParams);
+                $post = $this->input->formData();
+                $user = (isset($post['user']) && is_array($post['user'])) ? $post['user'] : [];
+                $backurl = isset($user['backurl']) ? $user['backurl'] : '';
+                $url = parse_url($backurl);
+                if (is_array($url) && !empty($url['query'])) {
+                    parse_str($url['query'], $backurlParams);
+                }
 
                 User::logout();
-                $this->redirect($user['backurl']);
+                $this->redirect($backurl);
                 break;
         }
     }

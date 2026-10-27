@@ -9,12 +9,12 @@
                         <table class="table collapse vehicle-modifications">
                             {{ block('table_header') }}
                             {{ block('table_row') }}
-                            {% if vehicle.children|length > 0 %}
+                            {% if vehicleChildren[name]|default([])|length > 0 %}
                                 <tr>
                                     <td colspan="99" class="children-table-wrapper hidden">
                                         <table class="table collapse vehicle-modifications">
                                             {{ block('table_header') }}
-                                            {% for name, vehicle in vehicle.children %}
+                                            {% for name, vehicle in vehicleChildren[name]|default([]) %}
                                                 {% set child = true %}
                                                 {{ block('table_row') }}
                                             {% endfor %}

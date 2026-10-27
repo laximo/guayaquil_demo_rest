@@ -10,7 +10,7 @@
 
             {% set hasAnother = 0 %}
 
-            {% for group in unit.detailsByCode %}
+            {% for group in detailsByCode[unit.unitid]|default([]) %}
                 {% for detail in group %}
                     {% if detail.match %}
                         {{ block('row') }}
@@ -33,7 +33,7 @@
                 </tr>
             {% endif %}
 
-            {% for group in unit.detailsByCode %}
+            {% for group in detailsByCode[unit.unitid]|default([]) %}
                 {% for detail in group %}
                     {% if not detail.match %}
                         {% set anotherFromUnit = 'true' %}

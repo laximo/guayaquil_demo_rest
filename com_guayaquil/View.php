@@ -2,7 +2,6 @@
 
 namespace guayaquil;
 
-use AllowDynamicProperties;
 use Exception;
 use guayaquil\modules\Input;
 use guayaquil\modules\pathway\Pathway;
@@ -16,7 +15,6 @@ use Twig\Loader\FilesystemLoader;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
-#[AllowDynamicProperties]
 class View
 {
     /**
@@ -35,9 +33,24 @@ class View
     public $pathway;
 
     /**
-     * @var int
+     * @var int|float
      */
-    public $lastExecutionTime;
+    public $lastExecutionTime = 0;
+
+    /**
+     * @var string
+     */
+    public $message = '';
+
+    /**
+     * @var mixed
+     */
+    public $type = '';
+
+    /**
+     * @var string
+     */
+    public $service = '';
 
     /**
      * @var string[]
@@ -188,7 +201,10 @@ class View
         }
 
         foreach ($params as $key => $param) {
-            $params[$key] = trim($param ?? '');
+            if (is_array($param)) {
+                continue;
+            }
+            $params[$key] = trim($param === null ? '' : (string)$param);
         }
 
         if ($params) {

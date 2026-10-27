@@ -14,6 +14,86 @@ use GuayaquilLib\Oem;
 
 class UnitHtml extends View
 {
+    /**
+     * @var VehicleObject
+     */
+    public $vehicle;
+
+    /**
+     * @var CatalogObject
+     */
+    public $cataloginfo;
+
+    /**
+     * @var UnitObject
+     */
+    public $unit;
+
+    /**
+     * @var array
+     */
+    public $imagemap;
+
+    /**
+     * @var array
+     */
+    public $detailCodes;
+
+    /**
+     * @var PartObject[]
+     */
+    public $details;
+
+    /**
+     * @var string
+     */
+    public $catalog;
+
+    /**
+     * @var string
+     */
+    public $vid;
+
+    /**
+     * @var string
+     */
+    public $gid;
+
+    /**
+     * @var string
+     */
+    public $cid;
+
+    /**
+     * @var string
+     */
+    public $selectedCoi;
+
+    /**
+     * @var array|string
+     */
+    public $cois;
+
+    /**
+     * @var string
+     */
+    public $fromCatalogTask;
+
+    /**
+     * @var string
+     */
+    public $corrected;
+
+    /**
+     * @var bool
+     */
+    public $useApplicability;
+
+    /**
+     * @var string
+     */
+    public $matchDetailOem;
+
     public function Display($tpl = 'unit', $view = 'view')
     {
         $catalogCode    = $this->input->getString('c');

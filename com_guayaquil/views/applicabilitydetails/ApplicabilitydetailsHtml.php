@@ -10,6 +10,41 @@ use GuayaquilLib\Oem;
 
 class ApplicabilitydetailsHtml extends View
 {
+    /**
+     * @var bool
+     */
+    public $applicability;
+
+    /**
+     * @var string
+     */
+    public $gid;
+
+    /**
+     * @var OEMPartApplicabilityObject
+     */
+    public $details;
+
+    /**
+     * @var VehicleObject
+     */
+    public $vehicle;
+
+    /**
+     * @var string
+     */
+    public $format;
+
+    /**
+     * @var string
+     */
+    public $oem;
+
+    /**
+     * @var array
+     */
+    public $detailsByCode = [];
+
     public function Display($tpl = 'applicabilitydetails', $view = 'view')
     {
         $this->displayApplicabilityDetails();
@@ -24,6 +59,7 @@ class ApplicabilitydetailsHtml extends View
         $oem = $this->input->getString('oem', '');
         $vid = $this->input->getString('vid');
         $this->applicability = true;
+        $this->detailsByCode = [];
 
         /** @var CatalogObject $cataloginfo */
         /** @var OEMPartApplicabilityObject $details */
@@ -53,7 +89,7 @@ class ApplicabilitydetailsHtml extends View
                         $groups['-'][] = $detail;
                     }
                 }
-                $unit->detailsByCode = $groups;
+                $this->detailsByCode[$unit->getUnitId()] = $groups;
             }
         }
 

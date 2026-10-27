@@ -24,13 +24,12 @@ trait ServiceTrait
                 $this->view->appendLastExecutionCommand([$command->getRequestUrl()]);
             }
         }
-
-        return $result;
     }
 
     public function executeCommands($commands, array $headers = []): array
     {
         $timeStart = microtime(true);
+        $result = [];
 
         try {
             if (is_array($commands)) {
@@ -52,8 +51,10 @@ trait ServiceTrait
                 $this->view->setLastExecutionTime($timeEnd - $timeStart);
 
                 $commandUrls = [];
-                foreach ($commands as $command) {
-                    $commandUrls[] = urldecode($command->getRequestUrl());
+                if (is_array($commands)) {
+                    foreach ($commands as $command) {
+                        $commandUrls[] = urldecode($command->getRequestUrl());
+                    }
                 }
 
                 $this->view->appendLastExecutionCommand($commandUrls);

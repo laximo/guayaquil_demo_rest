@@ -6,12 +6,18 @@ use guayaquil\View;
 use GuayaquilLib\objects\oem\CatalogObject;
 use GuayaquilLib\Oem;
 
-/**
- * @property CatalogObject $cataloginfo
- * @property array $wizardFields
- */
 class CatalogHtml extends View
 {
+    /**
+     * @var CatalogObject
+     */
+    public $cataloginfo;
+
+    /**
+     * @var array
+     */
+    public $wizardFields;
+
     public function Display($tpl = 'catalog', $view = 'view')
     {
         $catalog = $this->input->getString('c');

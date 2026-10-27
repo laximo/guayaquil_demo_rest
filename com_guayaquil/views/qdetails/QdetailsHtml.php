@@ -9,14 +9,48 @@ use GuayaquilLib\objects\oem\QuickDetailListObject;
 use GuayaquilLib\objects\oem\VehicleObject;
 use GuayaquilLib\Oem;
 
-/**
- * @property string gid
- * @property array  categories
- * @property string format
- * @property bool   oem
- */
 class QdetailsHtml extends View
 {
+    /**
+     * @var bool
+     */
+    public $applicability;
+
+    /**
+     * @var string
+     */
+    public $gid;
+
+    /**
+     * @var QuickDetailListObject|OEMPartApplicabilityObject
+     */
+    public $details;
+
+    /**
+     * @var string
+     */
+    public $matchDetailOem;
+
+    /**
+     * @var VehicleObject
+     */
+    public $vehicle;
+
+    /**
+     * @var string
+     */
+    public $format;
+
+    /**
+     * @var string
+     */
+    public $oem;
+
+    /**
+     * @var array
+     */
+    public $detailsByCode = [];
+
     public function Display($tpl = 'qdetails', $view = 'view')
     {
         $catalogCode = $this->input->getString('c');
@@ -46,6 +80,7 @@ class QdetailsHtml extends View
         ]));
 
         $matchDetailOem = '';
+        $this->detailsByCode = [];
 
         foreach ($details->getCategories() as $category) {
             foreach ($category->getUnits() as $unit) {
@@ -62,7 +97,7 @@ class QdetailsHtml extends View
                     }
 
                 }
-                $unit->detailsByCode = $groups;
+                $this->detailsByCode[$unit->getUnitId()] = $groups;
             }
         }
 
